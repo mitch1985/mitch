@@ -11,7 +11,7 @@ import datetime
 keep_alive()
 #Login
 sid = login.doLogin()
-
+print("test")
 def welcherPlanetHatKeinenAuftrag():
     isBotschutz = True
     global sid
