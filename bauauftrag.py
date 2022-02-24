@@ -2,11 +2,13 @@ import requests
 import re
 from requests.api import request
 import Util.login as login
-import Util.botschutz as isBotSchutzOderNichtEingeloggt
+import Util.botschutz as botschutz
 from bs4 import BeautifulSoup
 import time
+from keep_alive import keep_alive
 import datetime
 
+keep_alive()
 #Login
 sid = login.doLogin()
 
@@ -14,9 +16,11 @@ def welcherPlanetHatKeinenAuftrag():
     isBotschutz = True
     global sid
     while isBotschutz:
-        responseErsterPlanet = requests.get(f'http://www.earthlost.de/construction.phtml?planetindex=1600&sid={sid}').text
-        if isBotSchutzOderNichtEingeloggt(responseErsterPlanet):
-            print ("welcherPlanetHatKeinenAuftrag")
+        responseErsterPlanet = requests.get(
+            f'http://www.earthlost.de/construction.phtml?planetindex=1600&sid={sid}'
+        ).text
+        if botschutz.isBotSchutzOderNichtEingeloggt(responseErsterPlanet):
+            print("welcherPlanetHatKeinenAuftrag")
             sid = login.doLogin()
             continue
         isBotschutz = False
@@ -30,10 +34,10 @@ def welcherPlanetHatKeinenAuftrag():
                                                  attrs['href'])
     return planetenIndexWoGebautWerdenKann
 
-
-print("Start")
+#16 Schiffsfabrik
 gebaeude = 16
 tempId = 0
+wartezeit = 120
 
 #Dauerschleife
 while True:
@@ -43,35 +47,28 @@ while True:
         while isPlanetOhneBauauftragVorhanden:
             #Ermitteln welcher Planet keien Bauauftrag hat
             planetID = welcherPlanetHatKeinenAuftrag()
-            print (planetID)
             if planetID == 0:
                 isPlanetOhneBauauftragVorhanden = False
             else:
                 planetID = str(planetID).replace('[', '')
                 planetID = str(planetID).replace(']', '')
                 planetID = str(planetID).replace('\'', '')
-                if (planetID == tempId):
-                    if (gebaeude == 25):
-                        gebaeude = 0
-                    gebaeude = gebaeude + 1
-                    print(gebaeude)
                 tempId = planetID
-                print(planetID)
                 bauParameter = {'sid': sid, 'gebaeude': gebaeude}
                 response = requests.post(
                     f'http://www.earthlost.de/construction.phtml?planetindex={planetID}',
                     data=bauParameter).text
-                if (isBotSchutzOderNichtEingeloggt(response)):
+                if (botschutz.isBotSchutzOderNichtEingeloggt(response)):
                     print("bauauftrag Main")
                     sid = login.doLogin()
                     continue
-        print ('Forschung starten...wenn nicht läuft.')
-        forschungsParams = {'sid': sid, 'forschung': '18'}
+        print('Forschung starten...wenn nicht läuft.')
+        forschungsParams = {'sid': sid, 'forschung': '3'}
         response = requests.post(
-                  f'http://www.earthlost.de/research.phtml?planetindex=78651',
-                  data=forschungsParams).text
-        print("Alles abgearbeitet, warte 120 Sekunden.")
-        time.sleep(120)
-    except:
-        print("Except-Block Bauauftrag - Womöglich kein Internet.")
-        time.sleep(120)
+            f'http://www.earthlost.de/research.phtml?planetindex=78651',
+            data=forschungsParams).text
+        print(f'Alles abgearbeitet, warte {wartezeit} Sekunden.')
+        time.sleep(wartezeit)
+    except Exception as e:
+        print(e)
+        time.sleep(wartezeit)
