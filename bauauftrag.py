@@ -7,11 +7,11 @@ from bs4 import BeautifulSoup
 import time
 from keep_alive import keep_alive
 import datetime
+import random
 
 keep_alive()
 #Login
 sid = login.doLogin()
-print("test")
 def welcherPlanetHatKeinenAuftrag():
     isBotschutz = True
     global sid
@@ -35,7 +35,7 @@ def welcherPlanetHatKeinenAuftrag():
     return planetenIndexWoGebautWerdenKann
 
 #16 Schiffsfabrik
-gebaeude = 16
+
 tempId = 0
 wartezeit = 120
 
@@ -45,6 +45,7 @@ while True:
         isPlanetOhneBauauftragVorhanden = True
         print(datetime.datetime.now().time())
         while isPlanetOhneBauauftragVorhanden:
+            gebaeude = 16
             #Ermitteln welcher Planet keien Bauauftrag hat
             planetID = welcherPlanetHatKeinenAuftrag()
             if planetID == 0:
@@ -53,13 +54,15 @@ while True:
                 planetID = str(planetID).replace('[', '')
                 planetID = str(planetID).replace(']', '')
                 planetID = str(planetID).replace('\'', '')
+                if(tempId == planetID):
+                    gebaeude = random.randint(0,25)
+                    print("Keine Ressourcen mehr. Versuchen irgendwas anderes zu bauen.")
                 tempId = planetID
                 bauParameter = {'sid': sid, 'gebaeude': gebaeude}
                 response = requests.post(
                     f'http://www.earthlost.de/construction.phtml?planetindex={planetID}',
                     data=bauParameter).text
                 if (botschutz.isBotSchutzOderNichtEingeloggt(response)):
-                    print("bauauftrag Main")
                     sid = login.doLogin()
                     continue
         print('Forschung starten...wenn nicht läuft.')
