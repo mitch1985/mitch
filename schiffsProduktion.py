@@ -49,7 +49,7 @@ for planetenIndex in meinePlaneten:
     elif (loescheSchiffsschleifen):
         schiffsschleifeLoeschen(responsePlanetProduktion)
 
-    schiffsproduktion = {'sid' : sid, 'sr4' : '9999', 'action' : 'build' }
+    schiffsproduktion = {'sid' : sid, 'sr6' : '9999', 'action' : 'build' }
     responseSchiffeproduzieren = requests.post(f'http://www.earthlost.de/produktion.phtml?planetindex={planetenIndex}', data=schiffsproduktion).text
     if isBotSchutzOderNichtEingeloggt(responseSchiffeproduzieren):
         meinePlaneten.append(planetenIndex)

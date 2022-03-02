@@ -37,7 +37,7 @@ def welcherPlanetHatKeinenAuftrag():
 #16 Schiffsfabrik
 
 tempId = 0
-wartezeit = 120
+wartezeit = 121
 
 #Dauerschleife
 while True:
@@ -66,7 +66,7 @@ while True:
                     sid = login.doLogin()
                     continue
         print('Forschung starten...wenn nicht läuft.')
-        forschungsParams = {'sid': sid, 'forschung': '3'}
+        forschungsParams = {'sid': sid, 'forschung': '17'}
         response = requests.post(
             f'http://www.earthlost.de/research.phtml?planetindex=78651',
             data=forschungsParams).text
