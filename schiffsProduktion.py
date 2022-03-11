@@ -3,12 +3,7 @@ import re
 from requests.api import request
 import Util.login as login
 import Util.planetenListe as planetenListe
-
-#Botschutz detektor
-def isBotSchutzOderNichtEingeloggt(response):
-    if re.findall('eingeloggt', response) : print (f'Nicht eingeloggt')
-    if re.findall('Bot-Schutz', response) : print (f'Bot-Schutz')
-    return re.findall('Bot-Schutz',response) or re.findall('eingeloggt', response)
+import Util.botschutz as botschutz
 
 def schiffsschleifeLoeschen(response):
     #Finde alle Schiffe in den Schleifen -> "[Schiff1] [Schiff2] [Schiff3]"
@@ -24,7 +19,7 @@ def schiffsschleifeLoeschen(response):
     for produktionAttributeString in produktionsListe:
         produktionAttributeArray = str(produktionAttributeString).split(',')
         responseLoescheSchiffe = requests.get(f'http://www.earthlost.de/produktion.phtml?action=delete&sid={sid}&item={produktionAttributeArray[0]}').text
-        if isBotSchutzOderNichtEingeloggt(responseLoescheSchiffe):
+        if botschutz.isBotSchutzOderNichtEingeloggt(responseLoescheSchiffe):
             login.doLogin()
 
 #Login und Planeten holen
@@ -41,7 +36,7 @@ for planetenIndex in meinePlaneten:
     responsePlanetProduktion = requests.get(f'http://www.earthlost.de/produktion.phtml?planetindex={planetenIndex}&sid={sid}').text
     print(f'Es wird der Planet bearbeitet: {planetenIndex}')
     #Sollen die Schiffsschleifen gelöscht werden? 
-    if (isBotSchutzOderNichtEingeloggt(responsePlanetProduktion)):
+    if (botschutz.isBotSchutzOderNichtEingeloggt(responsePlanetProduktion)):
         meinePlaneten.append(planetenIndex)
         sid = login.doLogin()
         continue
@@ -51,7 +46,7 @@ for planetenIndex in meinePlaneten:
 
     schiffsproduktion = {'sid' : sid, 'sr6' : '9999', 'action' : 'build' }
     responseSchiffeproduzieren = requests.post(f'http://www.earthlost.de/produktion.phtml?planetindex={planetenIndex}', data=schiffsproduktion).text
-    if isBotSchutzOderNichtEingeloggt(responseSchiffeproduzieren):
+    if botschutz.isBotSchutzOderNichtEingeloggt(responseSchiffeproduzieren):
         meinePlaneten.append(planetenIndex)
         sid = login.doLogin()
         continue
