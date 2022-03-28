@@ -37,7 +37,8 @@ def welcherPlanetHatKeinenAuftrag():
 #16 Schiffsfabrik
 
 tempId = 0
-wartezeit = 121
+wartezeit = 240
+hqPlanis = {1600, 15628,30853,43758,57445,71490,84835,98291,112828,126635,140630,182174,195744,223081,236625,250030,263462,277426,291406,304550,318649}
 
 #Dauerschleife
 while True:
@@ -45,7 +46,7 @@ while True:
         isPlanetOhneBauauftragVorhanden = True
         print(datetime.datetime.now().time())
         while isPlanetOhneBauauftragVorhanden:
-            gebaeude = 16
+            gebaeude = 17
             #Ermitteln welcher Planet keien Bauauftrag hat
             planetID = welcherPlanetHatKeinenAuftrag()
             if planetID == 0:
@@ -54,6 +55,8 @@ while True:
                 planetID = str(planetID).replace('[', '')
                 planetID = str(planetID).replace(']', '')
                 planetID = str(planetID).replace('\'', '')
+                if planetID in hqPlanis:
+                  gebaeude = 0
                 if(tempId == planetID):
                     gebaeude = random.randint(0,25)
                     print("Keine Ressourcen mehr. Versuchen irgendwas anderes zu bauen.")
@@ -66,7 +69,7 @@ while True:
                     sid = login.doLogin()
                     continue
         print('Forschung starten...wenn nicht läuft.')
-        forschungsParams = {'sid': sid, 'forschung': '17'}
+        forschungsParams = {'sid': sid, 'forschung': '5'}
         response = requests.post(
             f'http://www.earthlost.de/research.phtml?planetindex=78651',
             data=forschungsParams).text

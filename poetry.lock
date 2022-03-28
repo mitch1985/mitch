@@ -247,6 +247,14 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "thread6"
+version = "0.2.0"
+description = "A plug n play multithreading interface"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "trio"
 version = "0.20.0"
 description = "A friendly Python library for async concurrency and I/O"
@@ -321,7 +329,7 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b652b8f74e48f67e21cf702e6952846d98fe021e9e90f5ebc9fa85165bbb584d"
+content-hash = "08dea5a6b7c39a9797314f17b1319c15fcfcb3153531c1228401580ebbb3d556"
 
 [metadata.files]
 async-generator = [
@@ -518,6 +526,10 @@ sortedcontainers = [
 soupsieve = [
     {file = "soupsieve-2.3.1-py3-none-any.whl", hash = "sha256:1a3cca2617c6b38c0343ed661b1fa5de5637f257d4fe22bd9f1338010a1efefb"},
     {file = "soupsieve-2.3.1.tar.gz", hash = "sha256:b8d49b1cd4f037c7082a9683dfa1801aa2597fb11c3a1155b7a5b94829b4f1f9"},
+]
+thread6 = [
+    {file = "thread6-0.2.0-py3-none-any.whl", hash = "sha256:618037241f4a486940ca8e9c1f8cb0a476473c6036dc10a717c1ff5fbdabd7fc"},
+    {file = "thread6-0.2.0.tar.gz", hash = "sha256:ed7a398e7f4d7fcedfcbc689ed3ef11179b040ead277ba15a6b316ff7d4d1b81"},
 ]
 trio = [
     {file = "trio-0.20.0-py3-none-any.whl", hash = "sha256:fb2d48e4eab0dfb786a472cd514aaadc71e3445b203bc300bad93daa75d77c1a"},
