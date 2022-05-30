@@ -5,13 +5,34 @@ import Util.login as login
 import Util.botschutz as botschutz
 from bs4 import BeautifulSoup
 import time
-from keep_alive import keep_alive
+#from keep_alive import keep_alive
 import datetime
 import random
 
-keep_alive()
+#keep_alive()
 #Login
 sid = login.doLogin()
+
+def isHqAusbauNoetig(planetenIndex):
+    isBotschutz = True
+    global sid
+    while isBotschutz:
+        responsePlanet = requests.get(
+            f'http://www.earthlost.de/construction.phtml?planetindex={planetenIndex}&sid={sid}'
+        ).text
+        if botschutz.isBotSchutzOderNichtEingeloggt(responsePlanet):
+            print("welcherPlanetHatKeinenAuftrag()")
+            sid = login.doLogin()
+            continue
+        isBotschutz = False
+        planetenGebaeudeStatus = re.findall('gebaeude\((.*?)\)\;\\ngebaeude', responsePlanet)
+        planetHqAttribute = planetenGebaeudeStatus[0].split(',')
+        #hqStufe = re.sub('[^0-9]','', planetHqAttribute[4])
+        if(int(planetHqAttribute[4])<120):
+            return True
+        else:
+            return False
+
 def welcherPlanetHatKeinenAuftrag():
     isBotschutz = True
     global sid
@@ -20,7 +41,7 @@ def welcherPlanetHatKeinenAuftrag():
             f'http://www.earthlost.de/construction.phtml?planetindex=1600&sid={sid}'
         ).text
         if botschutz.isBotSchutzOderNichtEingeloggt(responseErsterPlanet):
-            print("welcherPlanetHatKeinenAuftrag")
+            print("welcherPlanetHatKeinenAuftrag()")
             sid = login.doLogin()
             continue
         isBotschutz = False
@@ -32,13 +53,17 @@ def welcherPlanetHatKeinenAuftrag():
     attrs = links[0].__getattribute__('attrs')
     planetenIndexWoGebautWerdenKann = re.findall(f'planetindex=(.+)\&',
                                                  attrs['href'])
+    
+    planetenIndexWoGebautWerdenKann = str(planetenIndexWoGebautWerdenKann).replace('[', '')
+    planetenIndexWoGebautWerdenKann = str(planetenIndexWoGebautWerdenKann).replace(']', '')
+    planetenIndexWoGebautWerdenKann = str(planetenIndexWoGebautWerdenKann).replace('\'', '')
+                                                
     return planetenIndexWoGebautWerdenKann
 
 #16 Schiffsfabrik
 
 tempId = 0
 wartezeit = 240
-hqPlanis = {"1600", "15628","30853","43758","57445","71490","84835","98291","112828","126635","140630","182174","195744","223081","236625","250030","263462","277426","291406","304550","318649"}
 
 #Dauerschleife
 while True:
@@ -46,17 +71,17 @@ while True:
         isPlanetOhneBauauftragVorhanden = True
         print(datetime.datetime.now().time())
         while isPlanetOhneBauauftragVorhanden:
-            gebaeude = 17
+            gebaeude = 16
             #Ermitteln welcher Planet keien Bauauftrag hat
             planetID = welcherPlanetHatKeinenAuftrag()
             if planetID == 0:
                 isPlanetOhneBauauftragVorhanden = False
             else:
-                planetID = str(planetID).replace('[', '')
-                planetID = str(planetID).replace(']', '')
-                planetID = str(planetID).replace('\'', '')
-                if planetID in hqPlanis:
-                  gebaeude = 0
+                if(isHqAusbauNoetig(planetID)):
+                    gebaeude=0
+                else:
+                    gebaeude=16
+
                 if(tempId == planetID):
                     gebaeude = random.randint(0,25)
                     print("Keine Ressourcen mehr. Versuchen irgendwas anderes zu bauen.")
