@@ -50,7 +50,10 @@ for planetenIndex in meinePlaneten:
         meinePlaneten.append(planetenIndex)
         sid = login.doLogin()
         continue
-#s18=grandor
+#s0=sondern einzeln
+#s18=grandorj
 #sr1=snatcher
+#sr6=noulon
+#sr4=hrs
 #sid=r1ek2vg99auk5me3i39str4pn1&action=build&sr0=&sr1=999&sr2=&sr3=&sr4=&sr5=&sr6=&sr7=&s8=&sr9=&sr10=&sr11=&sr13=&sr14=&s15=&s17=&s18=&s19=&sid=r1ek2vg99auk5me3i39str4pn1
 print("Ende")

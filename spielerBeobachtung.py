@@ -13,7 +13,7 @@ locale.setlocale(locale.LC_ALL, '')
 start=0
 data = []
 time =  datetime.now()
-datei = open(f'./Spieler/{time.day}-{time.month}-{time.year}-{time.hour}-{time.minute}.txt','w',encoding='utf8')
+#datei = open(f'./Spieler/{time.day}-{time.month}-{time.year}-{time.hour}-{time.minute}.txt','w',encoding='utf8')
 #datei.write("\r\nweitere Zeile")
 while start <= 1000:
     response = requests.get(f'http://www.earthlost.de/highscore.phtml?start={start}&sid={sid}').text

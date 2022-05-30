@@ -10,7 +10,7 @@ sid = login.doLogin()
 
 universe = 3
 
-galaxy = 1
+galaxy = 12
 while galaxy <= 25:
     system = 1
     while system <= 500:

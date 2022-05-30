@@ -22,7 +22,9 @@ while isBotschutz:
         continue
     flottenIds = re.findall("OPTION value=\"(.+?)\"", response)
     for flottenId in flottenIds:
-        hrFlotteVerstaerken = {'sid' : sid, 'ship4' : 50000, 'addtofleet':flottenId, 'max':9999}
+        #Kolos
+        #hrFlotteVerstaerken = {'sid' : sid, 'ship8' : 8, 'addtofleet':flottenId, 'max':9999}
+        hrFlotteVerstaerken = {'sid' : sid, 'ship4' : 20000, 'addtofleet':flottenId, 'max':10}
         responseFlottenVerstaerkung = requests.post(f'http://www.earthlost.de/flotten.phtml?', data=hrFlotteVerstaerken).text
         if (isBotSchutzOderNichtEingeloggt(responseFlottenVerstaerkung)):
             sid = login.doLogin()
