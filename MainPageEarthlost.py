@@ -3,6 +3,7 @@ import re
 from requests.api import request
 import Util.login as login
 import Util.botschutz as botschutz
+import findeKolonisierbarePlanetenMitPunkten as findKoloPlanis
 from bs4 import BeautifulSoup
 import time
 #from keep_alive import keep_alive
@@ -12,31 +13,33 @@ import random
 #keep_alive()
 #Login
 sid = login.doLogin()
+galaxy = 1
 
+# Die Methode schaut, ob ein HQ ausgebaut werden muss <120 HQ
 def isHqAusbauNoetig(planetenIndex):
-    isBotschutz = True
+    isAllesLaeuftNormal = True
     global sid
-    while isBotschutz:
+    while isAllesLaeuftNormal:
         responsePlanet = requests.get(
             f'http://www.earthlost.de/construction.phtml?planetindex={planetenIndex}&sid={sid}'
         ).text
         if botschutz.isBotSchutzOderNichtEingeloggt(responsePlanet):
-            print("welcherPlanetHatKeinenAuftrag()")
+            print("Botschutz oder nicht Eingeloggt in der Methode: isHqAusbauNoetig")
             sid = login.doLogin()
             continue
-        isBotschutz = False
+        isAllesLaeuftNormal = False
         planetenGebaeudeStatus = re.findall('gebaeude\((.*?)\)\;\\ngebaeude', responsePlanet)
-        planetHqAttribute = planetenGebaeudeStatus[0].split(',')
-        #hqStufe = re.sub('[^0-9]','', planetHqAttribute[4])
+        planetHqAttribute = planetenGebaeudeStatus[0].split(',')        #hqStufe = re.sub('[^0-9]','', planetHqAttribute[4])
         if(int(planetHqAttribute[4])<120):
             return True
         else:
             return False
 
+#Welcher Planet baut gerade nicht?
 def welcherPlanetHatKeinenAuftrag():
-    isBotschutz = True
+    isAllesLaeuftNormal = True
     global sid
-    while isBotschutz:
+    while isAllesLaeuftNormal:
         responseErsterPlanet = requests.get(
             f'http://www.earthlost.de/construction.phtml?planetindex=1600&sid={sid}'
         ).text
@@ -44,7 +47,7 @@ def welcherPlanetHatKeinenAuftrag():
             print("welcherPlanetHatKeinenAuftrag()")
             sid = login.doLogin()
             continue
-        isBotschutz = False
+        isAllesLaeuftNormal = False
 
     soup = BeautifulSoup(responseErsterPlanet, "html.parser")
     links = soup.find_all('a', attrs={'class': 'smalllink'})
@@ -98,8 +101,10 @@ while True:
         response = requests.post(
             f'http://www.earthlost.de/research.phtml?planetindex=78651',
             data=forschungsParams).text
-        print(f'Alles abgearbeitet, warte {wartezeit} Sekunden.')
-        time.sleep(wartezeit)
+        #print(f'Alles abgearbeitet, warte {wartezeit} Sekunden.')
+        print(f'Alle Planeten haben einen Bauauftrag. Suche nach freien Planeten starten.')
+        galaxy = findKoloPlanis(galaxy)
+        #time.sleep(wartezeit)
     except Exception as e:
-        print(e)
+        print(f'Unerwarteter Fehler in der MainPageEarthlost.py'{e})
         time.sleep(wartezeit)

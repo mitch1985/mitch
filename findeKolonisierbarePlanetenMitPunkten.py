@@ -1,27 +1,24 @@
 import requests
 import re
 import Util.login as login
-from bs4 import BeautifulSoup
-import locale
 
 import Util.botschutz as botschutz
 
 sid = login.doLogin()
 
-universe = 3
-
-galaxy = 12
-while galaxy <= 25:
+def findeKolonisierbarePlanetenMitPunkten(galaxy):
+    universe = 3
     system = 1
-    while system <= 500:
-        isBotschutz = True
-        while isBotschutz:
+    galaxyTmp = galaxy + 3
+    while system <= 500 and galaxyTmp < galaxy:
+        isAllesLaeuftNormal = True
+        while isAllesLaeuftNormal:
             url =f'http://www.earthlost.de/galaxy.phtml?universe={universe}&galaxy={galaxy}&system={system}&sid={sid}'
             response = requests.get(url)
             if botschutz.isBotSchutzOderNichtEingeloggt(response.text):
                 sid = login.doLogin()
                 continue
-            isBotschutz = False
+            isAllesLaeuftNormal = False
         planetenListe = re.findall('drawPlanet(.+?)\);',response.text)
         i=0
         for planet in planetenListe:
@@ -38,4 +35,5 @@ while galaxy <= 25:
                 print (f'Fehler: {galaxy}:{system}')
             i=i+1
         system = system + 1
-    galaxy = galaxy+1
+        galaxy = galaxy + 1
+    return galaxy
