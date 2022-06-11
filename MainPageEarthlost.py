@@ -44,7 +44,7 @@ def welcherPlanetHatKeinenAuftrag():
             f'http://www.earthlost.de/construction.phtml?planetindex=1600&sid={sid}'
         ).text
         if botschutz.isBotSchutzOderNichtEingeloggt(responseErsterPlanet):
-            print("welcherPlanetHatKeinenAuftrag()")
+            #print("welcherPlanetHatKeinenAuftrag()")
             sid = login.doLogin()
             continue
         isAllesLaeuftNormal = False
@@ -96,7 +96,7 @@ while True:
                 if (botschutz.isBotSchutzOderNichtEingeloggt(response)):
                     sid = login.doLogin()
                     continue
-        print('Forschung starten...wenn nicht läuft.')
+        #print('Forschung starten...wenn nicht läuft.')
         forschungsParams = {'sid': sid, 'forschung': '5'}
         response = requests.post(
             f'http://www.earthlost.de/research.phtml?planetindex=78651',
