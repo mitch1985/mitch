@@ -4,13 +4,11 @@ import Util.login as login
 
 import Util.botschutz as botschutz
 
-sid = login.doLogin()
-
-def findeKolonisierbarePlanetenMitPunkten(galaxy):
+def findeKolonisierbarePlanetenMitPunkten(galaxy,sid):
     universe = 3
     system = 1
-    galaxyTmp = galaxy + 3
-    while system <= 500 and galaxyTmp < galaxy:
+    print(f'Finde Kolo Planis startet mit der Galaxy: {galaxy}')
+    while system <= 500:
         isAllesLaeuftNormal = True
         while isAllesLaeuftNormal:
             url =f'http://www.earthlost.de/galaxy.phtml?universe={universe}&galaxy={galaxy}&system={system}&sid={sid}'
@@ -35,5 +33,3 @@ def findeKolonisierbarePlanetenMitPunkten(galaxy):
                 print (f'Fehler: {galaxy}:{system}')
             i=i+1
         system = system + 1
-        galaxy = galaxy + 1
-    return galaxy

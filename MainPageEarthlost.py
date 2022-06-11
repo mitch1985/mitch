@@ -103,8 +103,8 @@ while True:
             data=forschungsParams).text
         #print(f'Alles abgearbeitet, warte {wartezeit} Sekunden.')
         print(f'Alle Planeten haben einen Bauauftrag. Suche nach freien Planeten starten.')
-        galaxy = findKoloPlanis(galaxy)
+        findKoloPlanis.findeKolonisierbarePlanetenMitPunkten(random.uniform(1, 25),sid)
         #time.sleep(wartezeit)
     except Exception as e:
-        print(f'Unerwarteter Fehler in der MainPageEarthlost.py'{e})
+        print(f'Unerwarteter Fehler in der MainPageEarthlost.py{e}')
         time.sleep(wartezeit)
