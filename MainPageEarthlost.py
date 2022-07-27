@@ -1,9 +1,8 @@
 import requests
 import re
-from requests.api import request
 import Util.login as login
 import Util.botschutz as botschutz
-import findeKolonisierbarePlanetenMitPunkten as findKoloPlanis
+from Util import findeKolonisierbarePlanetenMitPunkten as findKoloPlanis
 from bs4 import BeautifulSoup
 import time
 # from keep_alive import keep_alive
