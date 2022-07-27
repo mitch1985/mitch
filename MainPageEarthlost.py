@@ -2,14 +2,15 @@ import requests
 import re
 import Util.login as login
 import Util.botschutz as botschutz
-from Util import findeKolonisierbarePlanetenMitPunkten as findKoloPlanis
+# from Util import findeKolonisierbarePlanetenMitPunkten as findKoloPlanis
 from bs4 import BeautifulSoup
 import time
-# from keep_alive import keep_alive
+from keep_alive import keep_alive
 import datetime
 import random
 
-# keep_alive()
+print("los gehts")
+keep_alive()
 # Login
 sid = login.doLogin()
 galaxy = 1
@@ -24,12 +25,16 @@ def isHqAusbauNoetig(planetenIndex):
             f'http://www.earthlost.de/construction.phtml?planetindex={planetenIndex}&sid={sid}'
         ).text
         if botschutz.isBotSchutzOderNichtEingeloggt(responsePlanet):
-            print("Botschutz oder nicht Eingeloggt in der Methode: isHqAusbauNoetig")
+            print(
+                "Botschutz oder nicht Eingeloggt in der Methode: isHqAusbauNoetig"
+            )
             sid = login.doLogin()
             continue
         isAllesLaeuftNormal = False
-        planetenGebaeudeStatus = re.findall('gebaeude\((.*?)\)\;\\ngebaeude', responsePlanet)
-        planetHqAttribute = planetenGebaeudeStatus[0].split(',')  # hqStufe = re.sub('[^0-9]','', planetHqAttribute[4])
+        planetenGebaeudeStatus = re.findall('gebaeude\((.*?)\)\;\\ngebaeude',
+                                            responsePlanet)
+        planetHqAttribute = planetenGebaeudeStatus[0].split(
+            ',')  # hqStufe = re.sub('[^0-9]','', planetHqAttribute[4])
         if (int(planetHqAttribute[4]) < 120):
             return True
         else:
@@ -58,9 +63,12 @@ def welcherPlanetHatKeinenAuftrag():
     planetenIndexWoGebautWerdenKann = re.findall(f'planetindex=(.+)\&',
                                                  attrs['href'])
 
-    planetenIndexWoGebautWerdenKann = str(planetenIndexWoGebautWerdenKann).replace('[', '')
-    planetenIndexWoGebautWerdenKann = str(planetenIndexWoGebautWerdenKann).replace(']', '')
-    planetenIndexWoGebautWerdenKann = str(planetenIndexWoGebautWerdenKann).replace('\'', '')
+    planetenIndexWoGebautWerdenKann = str(
+        planetenIndexWoGebautWerdenKann).replace('[', '')
+    planetenIndexWoGebautWerdenKann = str(
+        planetenIndexWoGebautWerdenKann).replace(']', '')
+    planetenIndexWoGebautWerdenKann = str(
+        planetenIndexWoGebautWerdenKann).replace('\'', '')
 
     return planetenIndexWoGebautWerdenKann
 
@@ -69,7 +77,6 @@ def welcherPlanetHatKeinenAuftrag():
 
 tempId = 0
 wartezeit = 240
-
 # Dauerschleife
 while True:
     try:
@@ -89,7 +96,9 @@ while True:
 
                 if (tempId == planetID):
                     gebaeude = random.randint(0, 25)
-                    print("Keine Ressourcen mehr. Versuchen irgendwas anderes zu bauen.")
+                    print(
+                        "Keine Ressourcen mehr. Versuchen irgendwas anderes zu bauen."
+                    )
                 tempId = planetID
                 bauParameter = {'sid': sid, 'gebaeude': gebaeude}
                 response = requests.post(
@@ -103,10 +112,13 @@ while True:
         response = requests.post(
             f'http://www.earthlost.de/research.phtml?planetindex=78651',
             data=forschungsParams).text
-        # print(f'Alles abgearbeitet, warte {wartezeit} Sekunden.')
-        print(f'Alle Planeten haben einen Bauauftrag. Suche nach freien Planeten starten.')
-        findKoloPlanis.findeKolonisierbarePlanetenMitPunkten(random.randint(1, 25), sid)
-        # time.sleep(wartezeit)
+        print(f'Alles abgearbeitet, warte {wartezeit} Sekunden.')
+        #print(
+        #    f'Alle Planeten haben einen Bauauftrag. Suche nach freien Planeten starten.'
+        #)
+        # findKoloPlanis.findeKolonisierbarePlanetenMitPunkten(
+        # random.randint(1, 25), sid)
+        time.sleep(wartezeit)
     except Exception as e:
         print(f'Unerwarteter Fehler in der MainPageEarthlost.py{e}')
         time.sleep(wartezeit)
