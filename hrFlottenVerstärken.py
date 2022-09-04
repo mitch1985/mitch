@@ -1,8 +1,7 @@
 import requests
 import re
-from requests.api import request
-import Util.login as login
-import Util.planetenListe as planetenListe
+import login as login
+import planetenListe as planetenListe
 
 
 # Botschutz detektor
@@ -28,7 +27,7 @@ while isBotschutz:
     for flottenId in flottenIds:
         # Kolos
         # hrFlotteVerstaerken = {'sid' : sid, 'ship8' : 8, 'addtofleet':flottenId, 'max':9999}
-        hrFlotteVerstaerken = {'sid': sid, 'ship4': 20000, 'addtofleet': flottenId, 'max': 10}
+        hrFlotteVerstaerken = {'sid': sid, 'ship4': 10000, 'addtofleet': flottenId, 'max': 1000}
         responseFlottenVerstaerkung = requests.post(f'http://www.earthlost.de/flotten.phtml?',
                                                     data=hrFlotteVerstaerken).text
         if (isBotSchutzOderNichtEingeloggt(responseFlottenVerstaerkung)):

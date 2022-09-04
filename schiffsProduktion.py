@@ -1,9 +1,8 @@
 import requests
 import re
-from requests.api import request
-import Util.login as login
-import Util.planetenListe as planetenListe
-import Util.botschutz as botschutz
+import login as login
+import planetenListe as planetenListe
+import botschutz as botschutz
 
 
 def schiffsschleifeLoeschen(response):

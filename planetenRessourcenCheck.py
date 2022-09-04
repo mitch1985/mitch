@@ -1,12 +1,11 @@
 import requests
 import re
-from requests.api import request
 from bs4 import BeautifulSoup
 import time
 import datetime
-import Util.login as login
-import Util.botschutz as isBotSchutzOderNichtEingeloggt
-import Util.planetenListe as planetenListe
+import login as login
+import botschutz as isBotSchutzOderNichtEingeloggt
+import planetenListe as planetenListe
 
 
 def welcherPlanetHatKeinenAuftrag():

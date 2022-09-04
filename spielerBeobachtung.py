@@ -1,11 +1,9 @@
 import requests
 import re
-from requests.api import request
-import Util.login as login
-import time
+import login as login
 from bs4 import BeautifulSoup
 import locale
-from datetime import datetime, timedelta
+from datetime import datetime
 
 sid = login.doLogin()
 locale.setlocale(locale.LC_ALL, '')

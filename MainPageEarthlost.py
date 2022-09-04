@@ -1,7 +1,7 @@
 import requests
 import re
-import Util.login as login
-import Util.botschutz as botschutz
+import login as login
+import botschutz as botschutz
 # from Util import findeKolonisierbarePlanetenMitPunkten as findKoloPlanis
 from bs4 import BeautifulSoup
 import time
@@ -89,12 +89,12 @@ while True:
             if planetID == 0:
                 isPlanetOhneBauauftragVorhanden = False
             else:
-                if (isHqAusbauNoetig(planetID)):
+                if isHqAusbauNoetig(planetID):
                     gebaeude = 0
                 else:
                     gebaeude = 16
 
-                if (tempId == planetID):
+                if tempId == planetID:
                     gebaeude = random.randint(0, 25)
                     print(
                         "Keine Ressourcen mehr. Versuchen irgendwas anderes zu bauen."
@@ -104,7 +104,7 @@ while True:
                 response = requests.post(
                     f'http://www.earthlost.de/construction.phtml?planetindex={planetID}',
                     data=bauParameter).text
-                if (botschutz.isBotSchutzOderNichtEingeloggt(response)):
+                if botschutz.isBotSchutzOderNichtEingeloggt(response):
                     sid = login.doLogin()
                     continue
         # print('Forschung starten...wenn nicht läuft.')
@@ -113,9 +113,9 @@ while True:
             f'http://www.earthlost.de/research.phtml?planetindex=78651',
             data=forschungsParams).text
         print(f'Alles abgearbeitet, warte {wartezeit} Sekunden.')
-        #print(
+        # print(
         #    f'Alle Planeten haben einen Bauauftrag. Suche nach freien Planeten starten.'
-        #)
+        # )
         # findKoloPlanis.findeKolonisierbarePlanetenMitPunkten(
         # random.randint(1, 25), sid)
         time.sleep(wartezeit)

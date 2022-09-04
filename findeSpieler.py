@@ -1,8 +1,7 @@
 import requests
 import re
 
-from requests.models import Response
-import Util.login as login
+import login as login
 
 sid = login.doLogin()
 universe = 3

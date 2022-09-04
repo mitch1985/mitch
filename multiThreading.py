@@ -2,10 +2,8 @@ import time
 import threading
 import requests
 import re
-import Util.botschutz as botschutz
-import Util.login as login
-from bs4 import BeautifulSoup
-import locale
+import login as login
+
 
 class threadtester (threading.Thread):
     def __init__(self, galaxy, system , sid):

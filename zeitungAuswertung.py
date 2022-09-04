@@ -1,8 +1,6 @@
 import requests
 import re
-from requests.api import request
-import Util.login as login
-import time
+import login as login
 from bs4 import BeautifulSoup
 import locale
 from datetime import datetime, timedelta
@@ -28,7 +26,6 @@ while x < 9:
         x=x-1
         sid = login.doLogin()
     soup = BeautifulSoup(response, "html.parser")
-    soup.find('table', attrs={'class': 'rundrum'})
     all_text = '|'.join(soup.findAll(text=True))
     kaempfe = re.findall(f'Kampf um einen Planeten(.+?)(vs.)(.+?)\|PopUp\|(.+?):', all_text)
 

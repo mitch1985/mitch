@@ -1,7 +1,7 @@
 import requests
 import re
-import Util.login as login
-import Util.listeSpieler as spielerListe
+import login as login
+import listeSpieler as spielerListe
 
 sid = login.doLogin()
 listeAllerSpieler = spielerListe.spielerliste(sid)
