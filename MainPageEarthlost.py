@@ -17,7 +17,7 @@ galaxy = 1
 
 
 # Die Methode schaut, ob ein HQ ausgebaut werden muss <120 HQ
-def isHqAusbauNoetig(planetenIndex):
+def welchesGebaeuteIstDran(planetenIndex):
     isAllesLaeuftNormal = True
     global sid
     while isAllesLaeuftNormal:
@@ -31,15 +31,36 @@ def isHqAusbauNoetig(planetenIndex):
             sid = login.doLogin()
             continue
         isAllesLaeuftNormal = False
-        planetenGebaeudeStatus = re.findall('gebaeude\((.*?)\)\;\\ngebaeude',
+        planetenGebaeudeStatus = re.findall('gebaeude\((.*?)\)\;',
                                             responsePlanet)
         planetHqAttribute = planetenGebaeudeStatus[0].split(
-            ',')  # hqStufe = re.sub('[^0-9]','', planetHqAttribute[4])
-        if (int(planetHqAttribute[4]) < 120):
-            return True
+            ',')
+        planetBioAttribute = planetenGebaeudeStatus[1].split(
+            ',')
+        planetFarmAttribute = planetenGebaeudeStatus[2].split(
+            ',')
+        planetBohrAttribute = planetenGebaeudeStatus[5].split(
+            ',')
+        planetSchiffAttribute = planetenGebaeudeStatus[6].split(
+            ',')
+        planetDeffAttribute = planetenGebaeudeStatus[7].split(
+            ',')# hqStufe = re.sub('[^0-9]','', planetHqAttribute[4])
+        if int(planetHqAttribute[4]) < 120:
+            return 0
         else:
-            return False
-
+            if int(planetSchiffAttribute[4]) <120:
+                return 16
+            else:
+                if int(planetBioAttribute[4]) <120:
+                    return 1
+                else:
+                    if int(planetFarmAttribute[4]) <200:
+                        return 3
+                    else:
+                        if int(planetBohrAttribute[8]) <200:
+                            return 6
+                        else:
+                            return 17
 
 # Welcher Planet baut gerade nicht?
 def welcherPlanetHatKeinenAuftrag():
@@ -89,10 +110,7 @@ while True:
             if planetID == 0:
                 isPlanetOhneBauauftragVorhanden = False
             else:
-                if isHqAusbauNoetig(planetID):
-                    gebaeude = 0
-                else:
-                    gebaeude = 16
+                gebaeude = welchesGebaeuteIstDran(planetID)
 
                 if tempId == planetID:
                     gebaeude = random.randint(0, 25)
