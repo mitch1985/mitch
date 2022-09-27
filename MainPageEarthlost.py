@@ -33,35 +33,25 @@ def welchesGebaeuteIstDran(planetenIndex):
         isAllesLaeuftNormal = False
         planetenGebaeudeStatus = re.findall('gebaeude\((.*?)\)\;',
                                             responsePlanet)
-        planetHqAttribute = planetenGebaeudeStatus[0].split(
-            ',')
-        planetBioAttribute = planetenGebaeudeStatus[1].split(
-            ',')
-        planetFarmAttribute = planetenGebaeudeStatus[2].split(
-            ',')
-        planetBohrAttribute = planetenGebaeudeStatus[5].split(
-            ',')
-        planetSchiffAttribute = planetenGebaeudeStatus[6].split(
-            ',')
-        planetDeffAttribute = planetenGebaeudeStatus[7].split(
-            ',')# hqStufe = re.sub('[^0-9]','', planetHqAttribute[4])
-
-        if int(planetHqAttribute[4]) < 220:
-            return 0
-        else:
-            if int(planetSchiffAttribute[4]) <120:
+        planetHqAttribute = planetenGebaeudeStatus[0].split(',')
+        for planiGebaeute in planetenGebaeudeStatus:
+            planiGebaeuteSplit = planiGebaeute.split(',')
+            print (planiGebaeuteSplit[2])
+            test = str(planiGebaeuteSplit[2])
+            if (test.__contains__("Hauptquartier") and int(planiGebaeuteSplit[4]) < 120):
+                return 0
+            elif (test.__contains__("Biozelle") and int(planiGebaeuteSplit[4]) < 120):
+                return 1
+            elif (test.__contains__("Farm") and int(planiGebaeuteSplit[4]) < 200):
+                return 3
+            elif (test.__contains__("Bohrturm") and int(planiGebaeuteSplit[4]) < 200):
+                return 6
+            elif (test.__contains__("Schiffsfabrik") and int(planiGebaeuteSplit[4]) < 120):
                 return 16
-            else:
-                if int(planetBioAttribute[4]) <120:
-                    return 1
-                else:
-                    if int(planetFarmAttribute[4]) <200:
-                        return 3
-                    else:
-                        if int(planetBohrAttribute[8]) <200:
-                            return 6
-                        else:
-                            return 17
+            elif (test.__contains__("Verteidigungsstation") and int(planiGebaeuteSplit[4]) < 100):
+                return 17
+        return 0
+
 
 # Welcher Planet baut gerade nicht?
 def welcherPlanetHatKeinenAuftrag():
