@@ -45,7 +45,8 @@ def welchesGebaeuteIstDran(planetenIndex):
             ',')
         planetDeffAttribute = planetenGebaeudeStatus[7].split(
             ',')# hqStufe = re.sub('[^0-9]','', planetHqAttribute[4])
-        if int(planetHqAttribute[4]) < 120:
+
+        if int(planetHqAttribute[4]) < 220:
             return 0
         else:
             if int(planetSchiffAttribute[4]) <120:
